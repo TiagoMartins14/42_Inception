@@ -1,6 +1,8 @@
-FROM: alipne:v3.20
+FROM alpine:v3.20
 
-RUN: apk update && apk add --no-cache nginx openssl
+RUN apk add --no-cache \
+        nginx \
+        openssl
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

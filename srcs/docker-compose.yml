@@ -44,10 +44,10 @@ services:
       - mariadb
     networks:
       - inception
-     secrets:
-       - db_password
-       - wp_user_password
-       - wp_admin_password
+    secrets:
+      - db_password
+      - wp_user_password
+      - wp_admin_password
 
   nginx:
     build:
@@ -62,7 +62,7 @@ services:
     init: true
     restart: on-failure
     volumes:
-      - wordpress_data: /var/html/www/
+      - wordpress_data:/var/html/www/
     depends_on:
       - wordpress
     networks:

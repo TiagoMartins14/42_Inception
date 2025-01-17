@@ -26,7 +26,7 @@ RUN apk update && \
     mkdir -p /wordpress && \
     mkdir -p /usr/lical/bin/wp && \
     openrc && \
-    touch /run/openrc/softlevel && \
+    touch /run/openrc/softlevel
 
 # Install WP-CLI
 RUN wget --no-check-certificate https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
@@ -36,6 +36,7 @@ RUN wget --no-check-certificate https://raw.githubusercontent.com/wp-cli/builds/
 # Copy and set permissions for the WordPress configuration script
 COPY ./conf/wp-config.php /wordpress
 COPY ./conf/www.conf /etc/php83/php-fpm.d
+COPY ./tools/init.sh /wordpress
 
 RUN chmod +x /wordpress/init.sh
 

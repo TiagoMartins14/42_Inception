@@ -1,14 +1,107 @@
 FROM alpine:3.20
 
-RUN apk add --no-cache nginx openssl curl && \
-    mkdir -p /run/nginx /etc/ssl && \
+# Install Nginx, OpenSSL, and OpenRC
+RUN apk update &&\
+    apk add --no-cache nginx openssl openrc && \
+    mkdir -p /nginx && \
+    openrc && \
+    touch /run/openrc/softlevel && \
+    mkdir -p /etc/nginx/ssl && \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-        -out /etc/ssl/nginx.crt \
-        -keyout /etc/ssl/nginx.key \
-        -subj "/C=PT/ST=Porto/L=Porto/O=42/OU=42/CN=localhost" && \
-    chmod 600 /etc/ssl/nginx.key
+        -out /etc/nginx/ssl/nginx.crt \
+        -keyout /etc/nginx/ssl/nginx.key \
+        -subj "/C=PT/ST=Porto/L=Porto/O=42/OU=42/CN=tiaferna.42.fr" && \
 
-COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy Nginx configuration file
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+
+# Expose ports for HTTP (80) and HTTPS (443)
+EXPOSE 80 443
+
+# Start Nginx when the container runs
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 EXPOSE 443
 

@@ -1,0 +1,102 @@
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariadb  # Directory containing MariaDB Dockerfile
+    container_name: mariadb
+    image: mariadb
+    environment:
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password # Root password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password        # Password for wp_user
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql/
+    ports:
+      - "3306:3306"
+    init: true
+    restart: on-failure
+    networks:
+      - inception
+    secrets:
+      - db_password
+      - mysql_password
+      - mysql_root_password
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress # Directory containing WordPress Dockerfile
+    container_name: wordpress
+    image: wordpress
+    environment:
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      WP_USER_PASSWORD_FILE: /run/secrets/wp_user_password
+      WP_ADMIN_PASSWORD_FILE: /run/secrets/wp_admin_password
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/html/www/
+    ports:
+      - "9000:9000"
+    init: true
+    restart: on-failure
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+     secrets:
+       - db_password
+       - wp_user_password
+       - wp_admin_password
+
+  nginx:
+    build:
+      context: ./requirements/nginx  # Directory containing NGINX Dockerfile
+    container_name: nginx
+    image: nginx
+    env_file:
+      - .env
+    ports:
+      - "80:80"    # Expose HTTP
+      - "443:443"  # Expose HTTPS if needed
+    init: true
+    restart: on-failure
+    volumes:
+      - wordpress_data: /var/html/www/
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+
+volumes:
+  mariadb_data:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/tiaferna/data/mariadb_data
+      o: bind
+  wordpress_data:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/tiaferna/data/wordpress_data
+      o: bind
+
+networks:
+  inception:
+    name: inception
+    driver: bridge
+
+secrets:
+  db_password:
+    file: ../secrets/DB_PASSWORD.txt
+  mysql_password:
+    file: ../secrets/MYSQL_PASSWORD.txt
+  mysql_root_password:
+    file: ../secrets/MYSQL_ROOT_PASSWORD.txt
+  wp_admin_password:
+    file: ../secrets/WP_ADMIN_PASSWORD.txt
+  wp_user_password:
+    file: ../secrets/WP_USER_PASSWORD.txt

@@ -1,17 +1,26 @@
 #!/bin/sh
 
-if [ ! -f "/var/lib/mysql/ib_buffer_pool" ];
-then
-	chown -R mysql:mysql /var/lib/mysql/
-	/etc/init.d/mariadb setup
-	rc-service mariadb start
-	/mariadb/sqlinit.sh
+# Initialize MariaDB data directory if not already initialized
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    echo "Initializing MariaDB data directory..."
+    mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    chown -R mysql:mysql /var/lib/mysql
 
+    echo "Starting MariaDB to run initial SQL setup..."
+    /usr/bin/mariadbd --basedir=/usr --datadir=/var/lib/mysql --user=mysql &
+    MARIADB_PID=$!
+
+    # Wait for MariaDB to start
+    sleep 5
+
+    # Run custom SQL initialization script
+    /mariadb/sqlinit.sh
+
+    # Shut down MariaDB
+    kill $MARIADB_PID
+    wait $MARIADB_PID
 fi
 
-sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mdb-server.cnf
-rc-service mariadb restart
-rc-service mariadb stop
+# Start MariaDB server
+exec /usr/bin/mariadbd --basedir=/usr --datadir=/var/lib/mysql --user=mysql --plugin-dir=/usr/lib/mariadb/plugin --pid-file=/run/mysqld/mariadb.pid
 
-
-/usr/bin/mariadbd --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mariadb/plugin --user=mysql --pid-file=/run/mysqld/mariadb.pid

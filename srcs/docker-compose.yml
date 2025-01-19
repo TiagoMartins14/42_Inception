@@ -74,14 +74,14 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/tiaferna/data/mariadb_data
+      device: /home/tiago/data/mariadb_data
       o: bind
   wordpress_data:
     name: wordpress_data
     driver: local
     driver_opts:
       type: none
-      device: /home/tiaferna/data/wordpress_data
+      device: /home/tiago/data/wordpress_data
       o: bind
 
 networks:

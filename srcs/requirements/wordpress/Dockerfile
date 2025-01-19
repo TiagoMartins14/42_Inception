@@ -34,9 +34,9 @@ RUN wget --no-check-certificate https://raw.githubusercontent.com/wp-cli/builds/
     mv wp-cli.phar /usr/local/bin/wp
 
 # Create a www-data system user and add it to the www-data group
-RUN set -x && \
-    addgroup -g 82 -S www-data && \
-    adduser -u 82 -D -S -G www-data www-data
+RUN set -x ; \
+    addgroup -g 82 -S www-data ; \
+    adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
 
 # Copy and set permissions for the WordPress configuration script
 COPY ./conf/wp-config.php /wordpress

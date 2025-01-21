@@ -12,7 +12,7 @@ else
     echo "GRANT ALL PRIVILEGES ON wordpress.* TO '${MYSQL_ROOT_USER}'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';" | mysql -u ${MYSQL_ROOT_USER}
 fi
 
-echo "FLUSHING PRIVILEGES;" | mysql -u ${MYSQL_ROOT_USER}
+echo "FLUSH PRIVILEGES;" | mysql -u ${MYSQL_ROOT_USER}
 
 # Create new user and grant privileges only if the user does not exist
 if mysql -u ${MYSQL_ROOT_USER} -e "SELECT 1 FROM mysql.user WHERE User = '${MYSQL_USER}' AND Host = 'localhost'" | grep -q "1"; then

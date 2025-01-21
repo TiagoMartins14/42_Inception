@@ -57,8 +57,13 @@ services:
     env_file:
       - .env
     ports:
-      - "80:80"    # Expose HTTP
       - "443:443"  # Expose HTTPS if needed
+    healthcheck:
+      test: ["CMD", "curl", "-k", "--fail", "https://tiaferna.42.fr:443"]
+      interval: 30s  # Check every 30 seconds
+      timeout: 10s   # Timeout after 10 seconds
+      retries: 3     # Retry 3 times before marking unhealthy
+      start_period: 10s  # Allow 10 seconds for startup before checks begin
     init: true
     restart: on-failure
     volumes:
@@ -74,14 +79,14 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/tiago/data/mariadb_data
+      device: /home/tiaferna42/data/mariadb_data
       o: bind
   wordpress_data:
     name: wordpress_data
     driver: local
     driver_opts:
       type: none
-      device: /home/tiago/data/wordpress_data
+      device: /home/tiaferna42/data/wordpress_data
       o: bind
 
 networks:

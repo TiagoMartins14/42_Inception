@@ -24,7 +24,7 @@ RUN apk update && \
         jq \
         bash && \
     mkdir -p /wordpress && \
-    mkdir -p /usr/lical/bin/wp && \
+    mkdir -p /usr/local/bin/wp && \
     openrc && \
     touch /run/openrc/softlevel
 

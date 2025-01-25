@@ -2,20 +2,12 @@ FROM alpine:3.20
 
 # Install MariaDB
 RUN apk update && \
-    apk add --no-cache mariadb mariadb-client openrc && \
-    mkdir -p /mariadb /var/lib/mysql /run/mysqld && \
-    chown -R mysql:mysql /var/lib/mysql /run/mysqld
+    apk add --no-cache mariadb mariadb-client
 
 # Copy MariaDB configuration file
-COPY ./conf/mariadb-server.cnf /etc/my.cnf.d/
-
-# Copy scripts
-COPY ./tools/* /mariadb
-RUN chmod +x /mariadb/*.sh
-
-# Expose MariaDB port
-EXPOSE 3306
+COPY ./conf/configure-mariadb.sh /tmp/configure-mariadb.sh
+RUN chmod +x /tmp/configure-mariadb.sh
 
 # Run MariaDB configuration script as entry point
-ENTRYPOINT ["/bin/sh", "/mariadb/init.sh"]
+ENTRYPOINT ["sh", "/tmp/configure-mariadb.sh"]
 

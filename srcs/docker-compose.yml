@@ -8,13 +8,15 @@ services:
     env_file:
       - .env
     ports:
-      - "443:443" 
-    healthcheck:
-      test: ["CMD", "curl", "-k", "--fail", "https://tiago.42.fr:443"]
-      interval: 30s  # Check every 30 seconds
-      timeout: 10s   # Timeout after 10 seconds
-      retries: 3     # Retry 3 times before marking unhealthy
-      start_period: 10s  # Allow 10 seconds for startup before checks begin
+      - "443:443"
+    # healthcheck:
+    #   test: ["CMD", "curl", "-k", "--fail", "https://tiago.42.fr:443"]
+    #   interval: 30s  # Check every 30 seconds
+    #   timeout: 10s   # Timeout after 10 seconds
+    #   retries: 3     # Retry 3 times before marking unhealthy
+    #   start_period: 10s  # Allow 10 seconds for startup before checks begin
+    # extra_hosts:
+    # - "tiago.42.fr:127.0.0.1"
     # init: true
     restart: on-failure
     volumes:
@@ -36,8 +38,8 @@ services:
     #   MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
       - mariadb-data:/var/lib/mysql/
-    # ports:
-    #   - "3306:3306"
+    ports:
+      - "3306:3306"
     # init: true
     restart: on-failure
     # secrets:
@@ -59,8 +61,8 @@ services:
     #   WP_ADMIN_PASSWORD_FILE: /run/secrets/wp_admin_password
     volumes:
       - wordpress-data:/var/www/html/
-    # ports:
-      # - "9000:9000"
+    ports:
+      - "9000:9000"
     # init: true
     restart: on-failure
     depends_on:

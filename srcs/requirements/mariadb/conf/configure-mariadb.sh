@@ -28,7 +28,7 @@ else
 	echo "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');" >> ${TMP}
 	echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASS}';" >> ${TMP}
 	echo "CREATE DATABASE ${WP_DB_NAME};" >> ${TMP}
-	echo "CREATE USER '${WP_DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';" >> ${TMP}
+	echo "CREATE USER '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_PASS}';" >> ${TMP}
 	echo "GRANT ALL PRIVILEGES ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_PASS}';" >> ${TMP}
 	echo "FLUSH PRIVILEGES;" >> ${TMP}
 

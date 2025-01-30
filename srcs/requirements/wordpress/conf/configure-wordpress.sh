@@ -29,7 +29,9 @@ else
 	echo "[WP config] Installing WordPress theme..."
 	wp-cli.phar theme install bravada --path=${WP_PATH} --activate --allow-root
 	wp-cli.phar theme status bravada --allow-root
+	wp-cli.phar option update comment_whitlist 0 --allow-root
 fi
 
+mkdir -p /run/php
 echo "[WP config] Starting WordPress fastCGI on port 9000."
 exec /usr/sbin/php-fpm83 -F -R

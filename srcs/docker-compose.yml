@@ -9,15 +9,7 @@ services:
       - .env
     ports:
       - "443:443"
-    # healthcheck:
-    #   test: ["CMD", "curl", "-k", "--fail", "https://tiago.42.fr:443"]
-    #   interval: 30s  # Check every 30 seconds
-    #   timeout: 10s   # Timeout after 10 seconds
-    #   retries: 3     # Retry 3 times before marking unhealthy
-    #   start_period: 10s  # Allow 10 seconds for startup before checks begin
-    # extra_hosts:
-    # - "tiago.42.fr:127.0.0.1"
-    # init: true
+    init: true
     restart: on-failure
     volumes:
       - wordpress-data:/var/www/html/
@@ -32,20 +24,18 @@ services:
       - inception
     env_file:
       - .env
-    # environment:
-    #   DB_PASSWORD_FILE: /run/secrets/db_password
-    #   MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
-    #   MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    environment:
+      WP_DB_PASS: /run/secrets/wp_db_pass
+      DB_ROOT_PASS: /run/secrets/db_root_pass
     volumes:
       - mariadb-data:/var/lib/mysql/
     ports:
       - "3306:3306"
-    # init: true
+    init: true
     restart: on-failure
-    # secrets:
-    #   - db_password
-    #   - mysql_password
-    #   - mysql_root_password
+    secrets:
+      - wp_db_pass
+      - db_root_pass
       
   wordpress:
     container_name: wordpress
@@ -55,22 +45,22 @@ services:
       - inception
     env_file:
       - .env
-    # environment:
-    #   DB_PASSWORD_FILE: /run/secrets/db_password
-    #   WP_USER_PASSWORD_FILE: /run/secrets/wp_user_password
-    #   WP_ADMIN_PASSWORD_FILE: /run/secrets/wp_admin_password
+    environment:
+      WP_DB_PASS: /run/secrets/wp_db_pass
+      WP_USER_PASS: /run/secrets/wp_user_pass
+      WP_ADMIN_PASS: /run/secrets/wp_admin_pass
     volumes:
       - wordpress-data:/var/www/html/
     ports:
       - "9000:9000"
-    # init: true
+    init: true
     restart: on-failure
     depends_on:
       - mariadb
-    # secrets:
-    #   - db_password
-    #   - wp_user_password
-    #   - wp_admin_password
+    secrets:
+      - wp_db_pass
+      - wp_user_pass
+      - wp_admin_pass
 
 volumes:
   mariadb-data:
@@ -91,14 +81,12 @@ networks:
     name: inception
     driver: bridge
 
-# secrets:
-#   db_password:
-#     file: ../secrets/DB_PASSWORD.txt
-#   mysql_password:
-#     file: ../secrets/MYSQL_PASSWORD.txt
-#   mysql_root_password:
-#     file: ../secrets/MYSQL_ROOT_PASSWORD.txt
-#   wp_admin_password:
-#     file: ../secrets/WP_ADMIN_PASSWORD.txt
-#   wp_user_password:
-#     file: ../secrets/WP_USER_PASSWORD.txt
+secrets:
+  db_root_pass:
+    file: ../secrets/DB_ROOT_PASS.txt
+  wp_db_pass:
+    file: ../secrets/WP_DB_PASS.txt
+  wp_admin_pass:
+    file: ../secrets/WP_ADMIN_PASS.txt
+  wp_user_pass:
+    file: ../secrets/WP_USER_PASS.txt

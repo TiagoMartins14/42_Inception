@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# Read secrets from variables
+if [ -f "$DB_ROOT_PASS" ]; then
+    export DB_ROOT_PASS=$(cat "$DB_ROOT_PASS")
+fi
+if [ -f "$WP_DB_PASS" ]; then
+    export WP_DB_PASS=$(cat "$WP_DB_PASS")
+fi
+
 echo "[DB config] Configuring MariaDB..."
 
 if [ ! -d "/run/mysqld" ]; then

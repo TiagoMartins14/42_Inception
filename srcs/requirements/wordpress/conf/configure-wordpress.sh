@@ -1,5 +1,16 @@
 #!/bin/sh
 
+# Read secrets from variables
+if [ -f "$WP_DB_PASS" ]; then
+    export WP_DB_PASS=$(cat "$WP_DB_PASS")
+fi
+if [ -f "$WP_ADMIN_PASS" ]; then
+    export WP_ADMIN_PASS=$(cat "$WP_ADMIN_PASS")
+fi
+if [ -f "$WP_USER_PASS" ]; then
+    export WP_USER_PASS=$(cat "$WP_USER_PASS")
+fi
+
 echo "[WP config] Configuring WordPress..."
 
 echo "[WP config] Waiting for MariaDB..."

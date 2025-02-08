@@ -29,8 +29,6 @@ services:
       DB_ROOT_PASS: /run/secrets/db_root_pass
     volumes:
       - mariadb-data:/var/lib/mysql/
-    ports:
-      - "3306:3306"
     init: true
     restart: on-failure
     secrets:
@@ -51,8 +49,6 @@ services:
       WP_ADMIN_PASS: /run/secrets/wp_admin_pass
     volumes:
       - wordpress-data:/var/www/html/
-    ports:
-      - "9000:9000"
     init: true
     restart: on-failure
     depends_on:

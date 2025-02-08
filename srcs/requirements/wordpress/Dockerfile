@@ -32,5 +32,6 @@ EXPOSE 9000
 
 # Run the WordPress configuration script at container startup
 ENTRYPOINT [ "sh", "/tmp/configure-wordpress.sh" ]
+CMD ["/usr/sbin/php-fpm83", "-F", "-R"]
 
 

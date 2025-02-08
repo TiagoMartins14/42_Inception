@@ -45,4 +45,4 @@ fi
 
 mkdir -p /run/php
 echo "[WP config] Starting WordPress fastCGI on port 9000."
-exec /usr/sbin/php-fpm83 -F -R
+exec $@ # Returns to Dockerfile

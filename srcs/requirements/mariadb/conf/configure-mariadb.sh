@@ -51,4 +51,4 @@ sed -i "s|skip-networking|# skip-networking|g" /etc/my.cnf.d/mariadb-server.cnf
 sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf
 
 echo "[DB config] Starting MariaDB daemon on port 3306."
-exec /usr/bin/mysqld --user=mysql --console
+exec $@

@@ -13,4 +13,4 @@ EXPOSE 3306
 
 # Run MariaDB configuration script as entry point
 ENTRYPOINT ["sh", "/tmp/configure-mariadb.sh"]
-
+CMD ["/usr/bin/mysqld", "--user=mysql", "--console"]

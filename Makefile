@@ -27,8 +27,6 @@ logs:
 setup:
 	${ENV} ./configure-login.sh
 	${ENV} ./configure-hosts.sh
-	sudo mkdir -p /home/${LOGIN}/
-	sudo mkdir -p ${DATA_PATH}
 	sudo mkdir -p ${DATA_PATH}/mariadb-data
 	sudo mkdir -p ${DATA_PATH}/wordpress-data
 

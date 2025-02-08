@@ -7,22 +7,22 @@ ENV =		LOGIN=${LOGIN} DATA_PATH=${DATA_PATH} DOMAIN=${LOGIN}.42.fr
 all: up
 
 up: setup
-	 ${ENV} docker-compose -f ./srcs/docker-compose.yml up -d --build
+	docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 down:
-	${ENV} docker-compose -f ./srcs/docker-compose.yml down
+	docker-compose -f ./srcs/docker-compose.yml down
 
 start:
-	${ENV} docker-compose -f ./srcs/docker-compose.yml start
+	docker-compose -f ./srcs/docker-compose.yml start
 
 stop:
-	${ENV} docker-compose -f ./srcs/docker-compose.yml stop
+	docker-compose -f ./srcs/docker-compose.yml stop
 
 status:
 	cd srcs && docker-compose ps && cd ..
 
 logs:
-	cd srcs && ${ENV} docker-compose logs && cd ..
+	cd srcs && docker-compose logs && cd ..
 
 setup:
 	${ENV} ./configure-login.sh

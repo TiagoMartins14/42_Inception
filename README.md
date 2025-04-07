@@ -14,7 +14,7 @@ The project needs **docker** to run.
 
 ### Instructions
 
-**1. Edit Makefile**
+**1. Edit and create files**
 
 - Before compiling the project, edit the 'login' argument in the Makefile to match your desired name
 - Create a 'secrets' folder inside 'srcs' folder

@@ -16,7 +16,7 @@ The project needs **docker** to run.
 
 **1. Edit Makefile**
 
-- Before compiling hte project, edit the 'login' alrgument in the Makefile to match tour desired name
+- Before compiling the project, edit the 'login' argument in the Makefile to match your desired name
 - Create a 'secrets' folder inside 'srcs' folder
 - In the secrets folder create one '.txt' file for each password needed for each service:
   - db_root_pass.txt
@@ -34,7 +34,7 @@ $> make
 
 **2. Using it in your browser**
 
-Once it has been compiled and running, open your brwoser and type:
+Once it has been compiled and running, open your browser and type:
 
 ```
 https://<LOGIN>.42.fr
